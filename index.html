@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carômetro - E.E. Milton Borges Ypiranga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f2fe, #bfdbfe, #93c5fd);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #1e3a8a;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 40px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      max-width: 400px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .search-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .search-box input[type="text"] {
+      padding: 12px 20px;
+      font-size: 18px;
+      border: 2px solid #93c5fd;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 350px;
+      margin-bottom: 20px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .search-box input[type="text"]:focus {
+      border-color: #2563eb;
+    }
+
+    .search-box button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 350px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-bottom: 10px;
+    }
+
+    .search-box button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .exit-button {
+      background: #ef4444;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      display: none;
+      max-width: 350px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .card img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #3b82f6;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
+    }
+
+    .card img:hover {
+      transform: scale(2.2);
+    }
+
+    .card p {
+      font-weight: 600;
+      color: #1e293b;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+
+    .external-links {
+      margin-top: 40px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .external-button {
+      padding: 12px 24px;
+      background-color: #2563eb;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .external-button:hover {
+      background-color: #1e40af;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>📸 Carômetro - E.E. Milton Borges Ypiranga</h1>
+
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="raInput" placeholder="Digite o RA do aluno">
+      <button onclick="mostrarFoto()">Buscar</button>
+      <button class="exit-button" onclick="sairPagina()">Sair</button>
+    </div>
+
+    <div id="fotoContainer" class="card">
+      <img id="fotoAluno" src="" alt="Foto do aluno">
+      <p id="raTexto"></p>
+    </div>
+  </div>
+
+
+  <div class="external-links">
+    <a href="https://saladofuturo.educacao.sp.gov.br/escolha-de-perfil" target="_blank" class="external-button">Sala do Futuro</a>
+    <a href="https://sed.educacao.sp.gov.br/" target="_blank" class="external-button">SED - Secretaria Digital</a>
+    <a href="https://escolatotal.educacao.sp.gov.br/" target="_blank" class="external-button">Escola Total</a>
+  </div>
+
+  <script>
+    function mostrarFoto() {
+      const ra = document.getElementById("raInput").value.trim();
+      const img = document.getElementById("fotoAluno");
+      const container = document.getElementById("fotoContainer");
+      const raText = document.getElementById("raTexto");
+
+      if (!ra) {
+        alert("Por favor, digite um RA.");
+        return;
+      }
+
+      img.onerror = function () {
+        container.style.display = "none";
+        alert("❌ Foto não encontrada para o RA informado.");
+      };
+
+      img.onload = function () {
+        raText.textContent = "RA: " + ra;
+        container.style.display = "block";
+      };
+
+      img.src = `fotos/${ra}.jpg?${new Date().getTime()}`;
+    }
+
+    function sairPagina() {
+      window.open('', '_self');
+      window.close();
+    }
+  </script>
+</body>
+</html>
